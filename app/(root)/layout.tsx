@@ -19,9 +19,12 @@ export default async function SetupLayout({children, params}:{
         }
     })
 
+    if(store) {
+        redirect(`${store.id}`)
+    }
+
     return (
         <>
-            <div>This is a NavBar</div>
             {children}
         </>
     )
