@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import {toast} from 'react-hot-toast';
 
 const formSchema = z.object({
-    name: z.string().min(1),
+    name: z.string().min(3),
 })
 
 export const StoreModal = () => {
