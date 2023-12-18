@@ -66,11 +66,17 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     try {
       setLoading(true);
 
-      await axios.patch(`/api/stores/${params.storeId}`, data)
+      if(initialData) {
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+      } else {
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
       router.refresh();
-      toast.success('Store updated');
+      router.push(`/${params.storeId}/billboards`);
 
-    } catch (error) {
+      toast.success(toastMessage);
+
+    } catch (error: any) {
       toast.error("Something went wrong");
     } finally {
       setLoading(false)
@@ -81,13 +87,13 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     try {
       setLoading(true);
 
-      await axios.delete(`/api/stores/${params.storeId}`)
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardsId}`)
       router.refresh();
       router.push('/')
-      toast.success('Store delete.')
+      toast.success('Billboard deleted.')
 
     } catch (error) {
-      toast.error("make sure you removed all products and categories first");
+      toast.error("make sure you removed all categories using the billboard first first");
     } finally {
       setLoading(false);
       setOpen(false)
@@ -123,10 +129,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
         <FormField
               control={form.control}
-              name="label"
+              name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Label</FormLabel>
+                  <FormLabel>Background Image</FormLabel>
                     <FormControl>
                       <ImageUpload
                         value={field.value ? [field.value] : []}
@@ -145,7 +151,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
               name="label"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image Url</FormLabel>
+                  <FormLabel>Label</FormLabel>
                   <FormControl>
                     <Input disabled={loading} placeholder="Billboard label" {...field} />
                   </FormControl>
